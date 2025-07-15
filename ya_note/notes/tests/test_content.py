@@ -5,7 +5,6 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-from django.utils import timezone
 
 from notes.forms import NoteForm
 from notes.models import Note
@@ -23,14 +22,13 @@ class TestListPage(TestCase):
         """Создаем тестовые данные."""
         cls.author = User.objects.create(username='Лев Толстой')
         cls.reader = User.objects.create(username='Читатель простой')
-        today = timezone.now()
         all_notes = (
             Note(
                 title=f'Заголовок {index}',
                 text='Текст заметки',
                 slug=f'test-slug-{index}',
                 author=cls.author,
-                date=today - timedelta(days=index))
+            )
             for index in range(settings.NOTE_COUNT_ON_HOME_PAGE + 1)
         )
         Note.objects.bulk_create(all_notes)
@@ -48,9 +46,9 @@ class TestListPage(TestCase):
         self.client.force_login(self.author)
         response = self.client.get(self.LIST_URL)
         object_list = response.context['object_list']
-        all_dates = [notes.date for notes in object_list]
-        sorted_dates = sorted(all_dates, reverse=True)
-        self.assertEqual(all_dates, sorted_dates)
+        all_ids = [note.id for note in object_list]
+        sorted_ids = sorted(all_ids, reverse=True)
+        self.assertEqual(all_ids, sorted_ids)
 
 
 class TestNoteCreateForm(TestCase):

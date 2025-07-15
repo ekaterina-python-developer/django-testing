@@ -45,7 +45,7 @@ def test_logout_page_availability(client):
 def test_comment_edit_delete_access(
     parametrized_client, name, comment_id_for_args, expected_status
 ):
-    """Проверка прав доступа к страницам редактирования и удаления комментариев."""
+    """Проверка прав доступа к редактированию и удалению комментариев."""
     url = reverse(name, args=comment_id_for_args)
     response = parametrized_client.get(url)
     assert response.status_code == expected_status

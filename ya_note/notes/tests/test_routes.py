@@ -11,6 +11,7 @@ from .test_mixins import (
     NOTE_EDIT_URL,
     NOTE_SUCCESS_URL,
     NOTES_LIST_URL,
+    REDIRECT_AFTER_LOGIN
 )
 
 
@@ -36,24 +37,40 @@ class TestRoutes(BaseTestData):
             ('GET', NOTE_SUCCESS_URL, self.author_client, HTTPStatus.OK),
 
             # GET-доступ для читателя (должен быть запрещён)
-            ('GET', NOTE_EDIT_URL, self.reader_client, HTTPStatus.NOT_FOUND),
-            ('GET', NOTE_DELETE_URL, self.reader_client, HTTPStatus.NOT_FOUND),
+            (
+                'GET',
+                NOTE_EDIT_URL,
+                self.not_author_client,
+                HTTPStatus.NOT_FOUND
+            ),
+            (
+                'GET',
+                NOTE_DELETE_URL,
+                self.not_author_client,
+                HTTPStatus.NOT_FOUND
+            )
 
             # POST-запрос (например, logout)
             ('POST', reverse_lazy('users:logout'),
              self.client, HTTPStatus.OK),
+
+            # Перенаправления для анонимных пользователей
+            ('GET', NOTE_ADD_URL, self.client, HTTPStatus.FOUND),
+            ('GET', NOTE_DETAIL_URL, self.client, HTTPStatus.FOUND),
+            ('GET', NOTES_LIST_URL, self.client, HTTPStatus.FOUND),
+            ('GET', NOTE_SUCCESS_URL, self.client, HTTPStatus.FOUND),
         ]
 
         for method, url, client, expected_status in test_cases:
             with self.subTest(method=method, url=url):
-                response = client.generic(method, url)
-                self.assertEqual(response.status_code, expected_status)
+                self.assertEqual(client.generic(
+                    method, url).status_code, expected_status)
 
     def test_redirects_for_anonymous(self):
         """Тестирование редиректов для анонимных пользователей."""
         test_cases = [
-            (self.NOTE_EDIT_URL, self.REDIRECT_AFTER_LOGIN['edit']),
-            (self.NOTE_DELETE_URL, self.REDIRECT_AFTER_LOGIN['delete']),
+            (NOTE_EDIT_URL, REDIRECT_AFTER_LOGIN['edit']),
+            (NOTE_DELETE_URL, REDIRECT_AFTER_LOGIN['delete']),
         ]
 
         for url, redirect_url in test_cases:

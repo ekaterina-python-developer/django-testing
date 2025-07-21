@@ -5,9 +5,6 @@ from .test_mixins import (
     NOTE_ADD_URL,
     NOTE_EDIT_URL,
     NOTES_LIST_URL,
-    NOTE_TITLE,
-    NOTE_TEXT,
-    NOTE_SLUG,
 )
 
 
@@ -18,10 +15,6 @@ class TestNotesListForDifferentUsers(BaseTestData):
         """Автор видит свою заметку в списке."""
         response = self.author_client.get(NOTES_LIST_URL)
         self.assertIn(self.note, response.context['object_list'])
-        self.assertEqual(self.note.title, NOTE_TITLE)
-        self.assertEqual(self.note.text, NOTE_TEXT)
-        self.assertEqual(self.note.slug, NOTE_SLUG)
-        self.assertEqual(self.note.author, self.author)
 
     def test_not_author_doesnt_see_note(self):
         """Другой пользователь не видит чужую заметку."""

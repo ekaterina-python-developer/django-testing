@@ -41,24 +41,24 @@ class TestNoteOperations(BaseTestData):
     def test_cannot_create_note_with_duplicate_slug(self):
         """Проверка, что нельзя создать заметку с уже существующим slug."""
         self.form_data['slug'] = self.note.slug
-        notes_before = set(Note.objects.values_list('id', flat=True))
+        notes = set(Note.objects.values_list('id', flat=True))
         response = self.author_client.post(NOTE_ADD_URL, data=self.form_data)
         self.assertEqual(response.status_code, HTTPStatus.OK)
         form = response.context['form']
         self.assertFalse(form.is_valid())
         self.assertIn('slug', form.errors)
         notes_after = set(Note.objects.values_list('id', flat=True))
-        self.assertEqual(notes_before, notes_after)
+        self.assertEqual(notes, notes_after)
 
     def test_author_can_edit_note(self):
         """Автор может отредактировать свою заметку."""
         response = self.author_client.post(NOTE_EDIT_URL, data=self.form_data)
         self.assertRedirects(response, NOTE_SUCCESS_URL)
-        edited_note = Note.objects.get(pk=self.note.pk)
-        self.assertEqual(edited_note.title, self.form_data['title'])
-        self.assertEqual(edited_note.text, self.form_data['text'])
-        self.assertEqual(edited_note.slug, self.form_data['slug'])
-        self.assertEqual(edited_note.author, self.note.author)
+        note = Note.objects.get(pk=self.note.pk)
+        self.assertEqual(note.title, self.form_data['title'])
+        self.assertEqual(note.text, self.form_data['text'])
+        self.assertEqual(note.slug, self.form_data['slug'])
+        self.assertEqual(note.author, self.note.author)
 
     def test_user_cannot_edit_others_note(self):
         """Пользователь не может редактировать чужую заметку."""

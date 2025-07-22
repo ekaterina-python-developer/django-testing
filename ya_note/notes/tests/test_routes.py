@@ -1,7 +1,5 @@
 from http import HTTPStatus
 
-from django.urls import reverse_lazy
-
 from .test_mixins import (
     BaseTestData,
     HOME_URL,
@@ -12,7 +10,8 @@ from .test_mixins import (
     NOTE_SUCCESS_URL,
     NOTES_LIST_URL,
     LOGIN_URL,
-    SIGNUP_URL
+    SIGNUP_URL,
+    LOGOUT_URL
 )
 
 
@@ -52,7 +51,7 @@ class TestRoutes(BaseTestData):
             ),
 
             # POST-запрос (например, logout)
-            ('POST', reverse_lazy('users:logout'),
+            ('POST', LOGOUT_URL,
              self.client, HTTPStatus.OK),
 
             # Перенаправления для анонимных пользователей

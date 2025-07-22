@@ -21,6 +21,7 @@ NOTE_DELETE_URL = reverse('notes:delete', args=[NOTE_SLUG])
 LOGIN_URL = reverse('users:login')
 LOGIN_REDIRECT_URL = reverse('notes:home')
 SIGNUP_URL = reverse('users:signup')
+LOGOUT_URL = reverse('users:logout')
 
 NOTE_EDIT_URL = reverse('notes:edit', args=[NOTE_SLUG])
 NOTE_DELETE_URL = reverse('notes:delete', args=[NOTE_SLUG])

@@ -11,7 +11,8 @@ from .test_mixins import (
     NOTE_EDIT_URL,
     NOTE_SUCCESS_URL,
     NOTES_LIST_URL,
-    REDIRECT_AFTER_LOGIN
+    LOGIN_URL,
+    SIGNUP_URL
 )
 
 
@@ -23,9 +24,9 @@ class TestRoutes(BaseTestData):
         test_cases = [
             # Публичные GET-страницы
             ('GET', HOME_URL, self.client, HTTPStatus.OK),
-            ('GET', reverse_lazy('users:login'),
+            ('GET', LOGIN_URL,
              self.client, HTTPStatus.OK),
-            ('GET', reverse_lazy('users:signup'),
+            ('GET', SIGNUP_URL,
              self.client, HTTPStatus.OK),
 
             # Приватные GET-страницы для автора
@@ -69,8 +70,8 @@ class TestRoutes(BaseTestData):
     def test_redirects_for_anonymous(self):
         """Тестирование редиректов для анонимных пользователей."""
         test_cases = [
-            (NOTE_EDIT_URL, REDIRECT_AFTER_LOGIN['edit']),
-            (NOTE_DELETE_URL, REDIRECT_AFTER_LOGIN['delete']),
+            (NOTE_EDIT_URL, f'{LOGIN_URL}?next={NOTE_EDIT_URL}'),
+            (NOTE_DELETE_URL, f'{LOGIN_URL}?next={NOTE_DELETE_URL}'),
         ]
 
         for url, redirect_url in test_cases:

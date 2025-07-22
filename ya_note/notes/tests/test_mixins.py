@@ -20,14 +20,10 @@ NOTE_SUCCESS_URL = reverse('notes:success')
 NOTE_DELETE_URL = reverse('notes:delete', args=[NOTE_SLUG])
 LOGIN_URL = reverse('users:login')
 LOGIN_REDIRECT_URL = reverse('notes:home')
+SIGNUP_URL = reverse('users:signup')
 
 NOTE_EDIT_URL = reverse('notes:edit', args=[NOTE_SLUG])
 NOTE_DELETE_URL = reverse('notes:delete', args=[NOTE_SLUG])
-
-REDIRECT_AFTER_LOGIN = {
-    'edit': f'{LOGIN_URL}?next={NOTE_EDIT_URL}',
-    'delete': f'{LOGIN_URL}?next={NOTE_DELETE_URL}',
-}
 
 
 class BaseTestData(TestCase):
@@ -51,7 +47,7 @@ class BaseTestData(TestCase):
             author=cls.author
         )
         cls.form_data = {
-            'title': 'Заголовок',
-            'text': 'Текст',
+            'title': 'Новый заголовок',
+            'text': 'Новый текст',
             'slug': 'new-note'
         }

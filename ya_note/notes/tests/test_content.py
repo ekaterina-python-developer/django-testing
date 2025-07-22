@@ -15,6 +15,11 @@ class TestNotesListForDifferentUsers(BaseTestData):
         """Автор видит свою заметку в списке."""
         response = self.author_client.get(NOTES_LIST_URL)
         self.assertIn(self.note, response.context['object_list'])
+        note_from_response = response.context['object_list'][0]
+        self.assertEqual(note_from_response.title, self.note.title)
+        self.assertEqual(note_from_response.text, self.note.text)
+        self.assertEqual(note_from_response.slug, self.note.slug)
+        self.assertEqual(note_from_response.author, self.note.author)
 
     def test_not_author_doesnt_see_note(self):
         """Другой пользователь не видит чужую заметку."""

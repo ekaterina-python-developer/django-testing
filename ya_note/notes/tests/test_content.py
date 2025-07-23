@@ -13,7 +13,7 @@ class TestNotesListForDifferentUsers(BaseTestData):
 
     def test_author_sees_own_note(self):
         """Автор видит свою заметку в списке."""
-        response = self.author_client.get(self.notes_list_url)
+        response = self.author_client.get(NOTES_LIST_URL)
         notes = response.context['object_list']
 
         self.assertIn(self.note, notes)

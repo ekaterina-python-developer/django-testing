@@ -7,17 +7,15 @@ from django.test.client import Client
 from django.urls import reverse
 from django.utils import timezone
 
-from news.forms import BAD_WORDS
 from news.models import Comment, News
 
 
 @pytest.fixture(autouse=True)
 def create_news():
     """Создание тестовых новостей для главной страницы."""
-    today = datetime.today()
     News.objects.bulk_create(
         News(title=f'Новость {index}', text='Просто текст.',
-             date=today - timedelta(days=index))
+             date=datetime.today() - timedelta(days=index))
         for index in range(settings.NEWS_COUNT_ON_HOME_PAGE + 1)
     )
 
@@ -26,12 +24,6 @@ def create_news():
 def news():
     """Создает тестовую новость."""
     return News.objects.create(title='Заголовок', text='Текст')
-
-
-@pytest.fixture
-def news_id_for_args(news):
-    """ID новости в виде кортежа."""
-    return (news.id,)
 
 
 @pytest.fixture
@@ -63,6 +55,12 @@ def reader_client(reader):
 
 
 @pytest.fixture
+def anonymous_client():
+    """Фикстура для анонимного клиента без рекурсии."""
+    return Client()
+
+
+@pytest.fixture
 def comment(author, news):
     """Тестовый комментарий."""
     return Comment.objects.create(
@@ -70,12 +68,6 @@ def comment(author, news):
         author=author,
         text='Текст комментария'
     )
-
-
-@pytest.fixture
-def comment_id_for_args(comment):
-    """ID комментария в виде кортежа."""
-    return (comment.id,)
 
 
 @pytest.fixture
@@ -87,18 +79,6 @@ def multiple_comments(news, author):
             news=news, author=author, text=f'Tекст {index}')
         comment.created = now + timedelta(days=index)
         comment.save()
-
-
-@pytest.fixture
-def form_data():
-    """Данные для формы комментария."""
-    return {'text': 'Текст комментария'}
-
-
-@pytest.fixture
-def bad_words_data():
-    """Данные с запрещёнными словами."""
-    return {'text': f'Какой-то текст, {BAD_WORDS[0]}, еще текст'}
 
 
 @pytest.fixture
@@ -140,3 +120,15 @@ def signup_url():
 @pytest.fixture
 def logout_url():
     return reverse('users:logout')
+
+
+@pytest.fixture
+def edit_redirect_url(edit_url, login_url):
+    """URL для редиректа с edit_url."""
+    return f'{login_url}?next={edit_url}'
+
+
+@pytest.fixture
+def delete_redirect_url(delete_url, login_url):
+    """URL для редиректа с delete_url."""
+    return f'{login_url}?next={delete_url}'

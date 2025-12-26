@@ -55,7 +55,7 @@ YaNews - это новостной сайт с системой комменти
 - Защита от изменения чужих комментариев
 
 ## Установка и запуск
-
+```
 #### Клонирование проекта
 git clone https://github.com/ekaterina-python-developer/django-testing.git
 cd ya_news
@@ -75,5 +75,5 @@ python manage.py loaddata news.json
 
 #### Запуск тестов
 pytest
-
+```
 

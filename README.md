@@ -56,10 +56,49 @@ YaNews — это новостной сайт с возможностью ком
 - правильные редиректы для анонимных пользователей;
 - ошибка `404` при попытке доступа к чужому контенту.
 
-## Быстрый запуск
+Создайте виртуальное окружение:
 
-1. Клонируйте проект:
+bash
+python -m venv env
+Активируйте его:
 
-   ```bash
-   git clone git@github.com:dariazueva/ya_news.git
-   cd ya_news
+для Linux/macOS:
+
+bash
+source env/bin/activate
+для Windows:
+
+bash
+env\Scripts\activate
+Установите зависимости:
+
+bash
+pip install -r requirements.txt
+Настройте базу данных:
+
+bash
+python manage.py migrate
+python manage.py loaddata news.json
+Запустите тесты:
+
+bash
+pytest
+Технологии
+Python;
+
+Django;
+
+pytest;
+
+SQLite3.
+
+Особенности
+Тесты написаны на pytest (вместо unittest).
+
+Используются фикстуры для подготовки данных.
+
+Применяется параметризация для проверки разных сценариев.
+
+Включены интеграционные тесты для проверки взаимодействия компонентов.
+
+

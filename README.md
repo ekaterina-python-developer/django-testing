@@ -56,24 +56,24 @@ YaNews - это новостной сайт с системой комменти
 
 ## Установка и запуск
 ```
-#### Клонирование проекта
+# Клонирование проекта
 git clone https://github.com/ekaterina-python-developer/django-testing.git
 cd ya_news
 
-#### Создание виртуального окружения
+# Создание виртуального окружения
 python -m venv env
 source env/bin/activate  # Linux/macOS
-#### или
+# или
 env\Scripts\activate     # Windows
 
-#### Установка зависимостей
+# Установка зависимостей
 pip install -r requirements.txt
 
-#### Настройка базы данных
+# Настройка базы данных
 python manage.py migrate
 python manage.py loaddata news.json
 
-#### Запуск тестов
+# Запуск тестов
 pytest
 ```
 

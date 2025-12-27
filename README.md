@@ -111,5 +111,5 @@ pytest
 ---
 
 ## Автор
-[Екатерина воронова](https://github.com/ekaterina-python-developer)
+[Екатерина Понурова](https://github.com/ekaterina-python-developer)
 
